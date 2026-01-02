@@ -7,3 +7,7 @@ cd "$directory"
 foma -e "source $name.foma" -e "push $name" -e "save stack $binary" -e "sigma" -e "exit"
 echo "Created Foma binary $binary."
 cd "$original_directory"
+infile="input.txt"
+if [ -f "$infile" ]; then
+  flookup -s " ← " -b "$directory/$binary" < "$infile" > output.txt
+fi
