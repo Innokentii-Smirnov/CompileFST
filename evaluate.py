@@ -20,12 +20,13 @@ with open('output.txt') as fin, open('corr.txt') as ref, open('correct.txt', 'w'
 	for line in fin:
 		if new_word:
 			corr = next(it).rstrip()
+			expected = corr.split(', ')
 			new_word = False
 		line = line.rstrip()
 		if line != '':
 			total_predicted += 1
 			word, segm = line.split(' ← ')
-			if segm == corr:
+			if segm in expected:
 				string = '{0:20} {1}'.format(word, segm)
 				corrf.write(string + '\n')
 				correct.add(string)
