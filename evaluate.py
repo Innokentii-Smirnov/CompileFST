@@ -20,26 +20,29 @@ with open('output.txt') as fin, open('corr.txt') as ref, open('correct.txt', 'w'
 	for line in fin:
 		if new_word:
 			corr = next(it).rstrip()
+			predicted = set[str]()
 			expected = corr.split(', ')
 			new_word = False
 		line = line.rstrip()
 		if line != '':
-			total_predicted += 1
 			word, segm = line.split(' ← ')
-			if segm in expected:
-				string = '{0:20} {1}'.format(word, segm)
-				corrf.write(string + '\n')
-				correct.add(string)
-				n_correct += 1
-			elif segm != '+?':
-				string = '{0:20} {1:25} {2}'.format(word, segm, corr)
-				errf.write(string + '\n')
-				errors.add(string)
-			else:
-				string = '{0:20} {1}'.format(word, corr)
-				mf.write(string + '\n')
+			predicted.add(segm)
 		else:
 			new_word = True
+			total_predicted += len(predicted)
+			for segm in predicted:
+				if segm in expected:
+					string = '{0:20} {1}'.format(word, segm)
+					corrf.write(string + '\n')
+					correct.add(string)
+					n_correct += 1
+				elif segm != '+?':
+					string = '{0:20} {1:25} {2}'.format(word, segm, corr)
+					errf.write(string + '\n')
+					errors.add(string)
+				else:
+					string = '{0:20} {1}'.format(word, corr)
+					mf.write(string + '\n')
 new_correct = correct - old_correct
 print('New correct: {0}.'.format(len(new_correct)))
 new_errors = errors - old_errors
